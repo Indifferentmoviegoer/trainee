@@ -17,6 +17,7 @@ class RequestSearch extends Request
         return [
             [['id', 'manager_id'], 'integer'],
             [['email', 'phone'], 'safe'],
+            ['status', 'boolean'],
         ];
     }
 
@@ -50,6 +51,7 @@ class RequestSearch extends Request
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'manager_id' => $this->manager_id,
+            'status' => $this->status,
         ]);
 
         $query->andFilterWhere(['like', 'email', $this->email])

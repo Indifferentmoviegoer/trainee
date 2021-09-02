@@ -33,7 +33,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'is_works:boolean',
             [
                 'value' => function ($data) {
-                    $url = Url::toRoute(['request/index', 'RequestSearch[manager_id]' => $data->id]);
+                    $url = Url::toRoute(
+                        [
+                            'request/index',
+                            'RequestSearch[manager_id]' => $data->id,
+                            'RequestSearch[status]' => 0,
+                        ]
+                    );
 
                     return Html::a('Заявки', $url, [
                         'class' => 'btn btn-success',
