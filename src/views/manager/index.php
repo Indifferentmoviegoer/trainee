@@ -1,7 +1,9 @@
 <?php
 
+use app\models\RequestSearch;
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ManagerSearch */
@@ -29,6 +31,17 @@ $this->params['breadcrumbs'][] = $this->title;
             'updated_at:datetime',
             'name',
             'is_works:boolean',
+            [
+                'attribute' => '',
+                'value' => function ($data) {
+                    $url = Url::toRoute(['request/index', 'RequestSearch[manager_id]' => $data->id]);
+
+                    return Html::a('Заявки', $url, [
+                        'class' => 'btn btn-success',
+                    ]);
+                },
+                'format' => 'raw'
+            ],
             [
                 'class' => yii\grid\ActionColumn::class,
                 'template' => '{view}',

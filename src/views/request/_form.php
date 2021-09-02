@@ -21,6 +21,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'text')->textarea(['rows' => 10]) ?>
 
+    <?= $form->field($model, 'status')->dropDownList(['0' => 'Открыта', '1' => 'Закрыта']) ?>
+
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>

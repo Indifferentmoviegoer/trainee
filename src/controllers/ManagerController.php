@@ -7,10 +7,17 @@ use app\models\Manager;
 use app\models\ManagerSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
+/**
+ *  Контроллер менеджеров
+ */
 class ManagerController extends Controller
 {
-    public function actionIndex()
+    /**
+     * @return string
+     */
+    public function actionIndex(): string
     {
         $searchModel = new ManagerSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -21,13 +28,22 @@ class ManagerController extends Controller
         ]);
     }
 
-    public function actionView($id)
+    /**
+     * @param int $id
+     *
+     * @return string
+     * @throws NotFoundHttpException
+     */
+    public function actionView(int $id): string
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
     }
 
+    /**
+     * @return string|Response
+     */
     public function actionCreate()
     {
         $model = new Manager();
@@ -41,7 +57,13 @@ class ManagerController extends Controller
         ]);
     }
 
-    public function actionUpdate($id)
+    /**
+     * @param int $id
+     *
+     * @return string|Response
+     * @throws NotFoundHttpException
+     */
+    public function actionUpdate(int $id)
     {
         $model = $this->findModel($id);
 
@@ -54,7 +76,13 @@ class ManagerController extends Controller
         ]);
     }
 
-    protected function findModel($id)
+    /**
+     * @param int $id
+     *
+     * @return Manager|null
+     * @throws NotFoundHttpException
+     */
+    protected function findModel(int $id)
     {
         if (($model = Manager::findOne($id)) !== null) {
             return $model;

@@ -2,15 +2,24 @@
 
 namespace app\controllers;
 
+use DateTime;
 use Yii;
 use app\models\Request;
 use app\models\RequestSearch;
+use yii\debug\models\timeline\Search;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
+/**
+ * Контроллер заявок
+ */
 class RequestController extends Controller
 {
-    public function actionIndex()
+    /**
+     * @return string
+     */
+    public function actionIndex(): string
     {
         $searchModel = new RequestSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -21,13 +30,22 @@ class RequestController extends Controller
         ]);
     }
 
-    public function actionView($id)
+    /**
+     * @param int $id
+     *
+     * @return string
+     * @throws NotFoundHttpException
+     */
+    public function actionView(int $id): string
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
     }
 
+    /**
+     * @return string|Response
+     */
     public function actionCreate()
     {
         $model = new Request();
@@ -41,7 +59,13 @@ class RequestController extends Controller
         ]);
     }
 
-    public function actionUpdate($id)
+    /**
+     * @param int $id
+     *
+     * @return string|Response
+     * @throws NotFoundHttpException
+     */
+    public function actionUpdate(int $id)
     {
         $model = $this->findModel($id);
 
@@ -54,7 +78,13 @@ class RequestController extends Controller
         ]);
     }
 
-    protected function findModel($id)
+    /**
+     * @param int $id
+     *
+     * @return Request|null
+     * @throws NotFoundHttpException
+     */
+    protected function findModel(int $id): ?Request
     {
         if (($model = Request::findOne($id)) !== null) {
             return $model;

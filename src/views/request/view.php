@@ -32,6 +32,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => $model->manager ? $model->manager->name : null
             ],
             'text:ntext',
+            [
+                'attribute' => 'status',
+                'value' => function ($data) {
+                    if($data->status){
+                        return '<span class="text-success">Закрыта</span>';
+                    }
+                    return '<span class="text-danger">Открыта</span>';
+                },
+                'format' => 'raw',
+            ],
         ],
     ]) ?>
 

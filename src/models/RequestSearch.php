@@ -4,9 +4,15 @@ namespace app\models;
 
 use yii\data\ActiveDataProvider;
 
+/**
+ * Поиск по заявкам
+ */
 class RequestSearch extends Request
 {
-    public function rules()
+    /**
+     * @return array[]
+     */
+    public function rules(): array
     {
         return [
             [['id', 'manager_id'], 'integer'],
@@ -14,7 +20,12 @@ class RequestSearch extends Request
         ];
     }
 
-    public function search($params)
+    /**
+     * @param $params
+     *
+     * @return ActiveDataProvider
+     */
+    public function search($params): ActiveDataProvider
     {
         $query = Request::find();
         $query->with(['manager']);
