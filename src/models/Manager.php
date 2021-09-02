@@ -3,6 +3,8 @@
 namespace app\models;
 
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 use yii\db\Expression;
 
 /**
@@ -12,14 +14,20 @@ use yii\db\Expression;
  * @property string $name
  * @property int $is_works
  */
-class Manager extends \yii\db\ActiveRecord
+class Manager extends ActiveRecord
 {
-    public static function tableName()
+    /**
+     * @return string
+     */
+    public static function tableName(): string
     {
         return 'managers';
     }
 
-    public function behaviors()
+    /**
+     * @return array[]
+     */
+    public function behaviors(): array
     {
         return [
             [
@@ -29,7 +37,10 @@ class Manager extends \yii\db\ActiveRecord
         ];
     }
 
-    public function rules()
+    /**
+     * @return array
+     */
+    public function rules(): array
     {
         return [
             [['name', 'is_works'], 'required'],
@@ -38,7 +49,10 @@ class Manager extends \yii\db\ActiveRecord
         ];
     }
 
-    public function attributeLabels()
+    /**
+     * @return string[]
+     */
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
@@ -49,6 +63,9 @@ class Manager extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * @return array
+     */
     public static function getList(): array
     {
         return array_column(
@@ -56,5 +73,13 @@ class Manager extends \yii\db\ActiveRecord
             'name',
             'id'
         );
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getRequests(): ActiveQuery
+    {
+        return $this->hasMany(Request::class, ['manager_id' => 'id'])->andWhere(['status' => false]);
     }
 }

@@ -4,9 +4,15 @@ namespace app\controllers;
 
 use yii\web\Controller;
 
+/**
+ * Контроллер главной страницы
+ */
 class SiteController extends Controller
 {
-    public function actions()
+    /**
+     * @return string[][]
+     */
+    public function actions(): array
     {
         return [
             'error' => [
@@ -15,7 +21,10 @@ class SiteController extends Controller
         ];
     }
 
-    public function actionIndex()
+    /**
+     * @return string
+     */
+    public function actionIndex(): string
     {
         return $this->render('index');
     }

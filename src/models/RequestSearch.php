@@ -4,17 +4,29 @@ namespace app\models;
 
 use yii\data\ActiveDataProvider;
 
+/**
+ * Поиск по заявкам
+ */
 class RequestSearch extends Request
 {
-    public function rules()
+    /**
+     * @return array[]
+     */
+    public function rules(): array
     {
         return [
             [['id', 'manager_id'], 'integer'],
             [['email', 'phone'], 'safe'],
+            ['status', 'boolean'],
         ];
     }
 
-    public function search($params)
+    /**
+     * @param $params
+     *
+     * @return ActiveDataProvider
+     */
+    public function search($params): ActiveDataProvider
     {
         $query = Request::find();
         $query->with(['manager']);
@@ -39,6 +51,7 @@ class RequestSearch extends Request
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'manager_id' => $this->manager_id,
+            'status' => $this->status,
         ]);
 
         $query->andFilterWhere(['like', 'email', $this->email])

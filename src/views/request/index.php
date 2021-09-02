@@ -4,6 +4,8 @@ use app\models\Manager;
 use app\models\Request;
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
+use app\repositories\RequestRepository;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\RequestSearch */
@@ -37,6 +39,33 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function (Request $request) {
                     return $request->manager ? $request->manager->name : null;
                 }
+            ],
+            [
+                'attribute' => 'Предыдущая заявка',
+                'value' => function ($data) {
+
+                    $request = RequestRepository::getPreviouslyRequest($data);
+                    $url = Url::toRoute(['request/view', 'id' => $request->id]);
+
+                    $previouslyRequest = '-';
+                    if(!empty($request)){
+                        $previouslyRequest = 'Заявка №' . $request->id;
+                        return Html::a($previouslyRequest, $url);
+                    }
+
+                    return Html::tag('p', $previouslyRequest);
+                },
+                'format' => 'raw'
+            ],
+            [
+                'attribute' => 'status',
+                'value' => function ($data) {
+                    if($data->status){
+                        return '<span class="text-success">Закрыта</span>';
+                    }
+                    return '<span class="text-danger">Открыта</span>';
+                },
+                'format' => 'raw'
             ],
             [
                 'class' => yii\grid\ActionColumn::class,

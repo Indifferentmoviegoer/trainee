@@ -3,6 +3,8 @@
 namespace app\models;
 
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 use yii\db\Expression;
 
 /**
@@ -13,17 +15,24 @@ use yii\db\Expression;
  * @property string $phone
  * @property string|null $text
  * @property int|null $manager_id
+ * @property bool $status
  *
  * @property Manager|null $manager
  */
-class Request extends \yii\db\ActiveRecord
+class Request extends ActiveRecord
 {
-    public static function tableName()
+    /**
+     * @return string
+     */
+    public static function tableName(): string
     {
         return 'requests';
     }
 
-    public function behaviors()
+    /**
+     * @return array[]
+     */
+    public function behaviors(): array
     {
         return [
             [
@@ -33,7 +42,10 @@ class Request extends \yii\db\ActiveRecord
         ];
     }
 
-    public function rules()
+    /**
+     * @return array
+     */
+    public function rules(): array
     {
         return [
             [['email', 'phone'], 'required'],
@@ -42,10 +54,14 @@ class Request extends \yii\db\ActiveRecord
             ['manager_id', 'exist', 'targetClass' => Manager::class, 'targetAttribute' => 'id'],
             [['email', 'phone'], 'string', 'max' => 255],
             ['text', 'safe'],
+            ['status', 'boolean'],
         ];
     }
 
-    public function attributeLabels()
+    /**
+     * @return string[]
+     */
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
@@ -55,10 +71,14 @@ class Request extends \yii\db\ActiveRecord
             'phone' => 'Номер телефона',
             'manager_id' => 'Ответственный менеджер',
             'text' => 'Текст заявки',
+            'status' => 'Статус заявки',
         ];
     }
 
-    public function getManager()
+    /**
+     * @return ActiveQuery
+     */
+    public function getManager(): ActiveQuery
     {
         return $this->hasOne(Manager::class, ['id' => 'manager_id']);
     }
