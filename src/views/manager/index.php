@@ -32,7 +32,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'is_works:boolean',
             [
-                'attribute' => '',
                 'value' => function ($data) {
                     $url = Url::toRoute(['request/index', 'RequestSearch[manager_id]' => $data->id]);
 

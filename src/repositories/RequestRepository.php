@@ -22,7 +22,7 @@ class RequestRepository
         $searchMonth = $monthDateTime->format('Y-m-d');
 
         return Request::find()
-            ->select('id')
+            ->select(['id', 'manager_id'])
             ->where(['<', 'id', $data->id])
             ->andWhere('created_at<=NOW()')
             ->andWhere(['>=', 'created_at', $searchMonth])

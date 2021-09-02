@@ -2,11 +2,11 @@
 
 namespace app\controllers;
 
-use DateTime;
+use app\repositories\ManagerRepository;
+use app\repositories\RequestRepository;
 use Yii;
 use app\models\Request;
 use app\models\RequestSearch;
-use yii\debug\models\timeline\Search;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -51,7 +51,24 @@ class RequestController extends Controller
         $model = new Request();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            $previouslyRequest = RequestRepository::getPreviouslyRequest($model);
+
+            if ($previouslyRequest && $previouslyRequest->manager->is_works) {
+                $model->manager_id = $previouslyRequest->manager_id;
+            } else {
+                $requests = [];
+                $managers = ManagerRepository::getList();
+                if ($managers) {
+                    foreach ($managers as $manager) {
+                        $requests[$manager->id][] += $manager->getRequests()->count();
+                    }
+                    $model->manager_id = array_search(min($requests), $requests);
+                }
+            }
+
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('create', [

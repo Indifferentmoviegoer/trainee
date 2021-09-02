@@ -3,6 +3,7 @@
 namespace app\models;
 
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 
@@ -72,5 +73,13 @@ class Manager extends ActiveRecord
             'name',
             'id'
         );
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getRequests(): ActiveQuery
+    {
+        return $this->hasMany(Request::class, ['manager_id' => 'id'])->andWhere(['status' => false]);
     }
 }
